@@ -1,8 +1,12 @@
 <script>
 import api from '../services/Api';
+import TranslationComponent from '../components/TranslationComponent.vue';
 
 export default {
   name: 'TreeItem', // necessary for self-reference
+  components: {
+    TranslationComponent,
+  },
   props: {
     model: Object,
   },
@@ -59,7 +63,7 @@ export default {
         >
       </div>
       <div class="translation-container" v-if="model.keys.length > 0">
-        <li v-for="key in model.keys">{{ key.name }}</li>
+        <TranslationComponent :model="model" />
       </div>
     </div>
     <ul v-show="isOpen" v-if="isFolder">

@@ -9,23 +9,44 @@ export default {
   data() {
     return {
       nodes: [],
+      selectOptions: [],
+      selectedLanguageLeft: '',
+      selectedLanguageRight: '',
     };
   },
   methods: {
-    getNodes(locale) {
+    getDefaultNodes(locale) {
       api.fetchNodes(locale).then((res) => {
         console.log(res.data);
         this.nodes = res.data;
       });
     },
+    getSelectOptions() {
+      api
+        .fetchSelectOptions()
+        .then((res) => {
+          this.selectOptions = res.data;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
   },
   mounted() {
-    this.getNodes('en');
+    this.getDefaultNodes('en');
+    this.getSelectOptions();
   },
 };
 </script>
 
 <template>
+  <select v-model="selectedLanguageLeft">
+    <option disabled value="">Select Language</option>
+    <option v-for="option in selectOptions" :value="option.name">
+      {{ option.name }}
+    </option>
+  </select>
+
   <ul v-for="node in nodes">
     <div v-if="node.parentId == null">
       <TreeItem class="item" :model="node" />
