@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 export default {
-  fetchNodes(locale) {
-    return axios.get('/test/test?locale=' + locale);
+  async fetchNodes(locale) {
+    return await axios.get('/test/test?locale=' + locale);
   },
   fetchSelectOptions() {
     return axios.get('/test/api/Locale');

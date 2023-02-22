@@ -9,11 +9,13 @@ export default {
   },
   props: {
     model: Object,
+    selectedLanguageLeft: String,
   },
   data() {
     return {
+      translationListLeft: [],
+      translationListRight: [],
       isOpen: false,
-      nodeName: '',
     };
   },
   computed: {
@@ -34,15 +36,28 @@ export default {
         this.isOpen = true;
       }
     },
-    addChild() {
-      this.model.children.push({
-        name: 'new stuff',
-      });
-    },
     async updateNodeName(newNodeName) {
       const updatedNode = { ...this.model, newNodeName };
       const response = await api.updateNode(updatedNode);
       console.log(response);
+    },
+    async fetchTranslationsLeftTree(language) {
+      await api
+        .fetchNodes(language)
+        .then((res) => {
+          this.translationListLeft = res.data;
+          console.log(
+            `Received ${this.translationListLeft.length} translations for language "${language}".`
+          );
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+  },
+  watch: {
+    selectedLanguageLeft: function (newVal, oldVal) {
+      this.fetchTranslationsLeftTree(newVal);
     },
   },
 };
@@ -52,7 +67,6 @@ export default {
   <li>
     <div class="tree-content">
       <div class="node-container">
-        <p>{{ model.name }}</p>
         <input
           type="text"
           v-model="model.name"
@@ -62,13 +76,15 @@ export default {
           [{{ isOpen ? '-' : '+' }}]</span
         >
       </div>
-      <div class="translation-container" v-if="model.keys.length > 0">
-        <TranslationComponent :model="model" />
-      </div>
+    </div>
+    <div class="key-container" v-for="key in model.keys">
+      <input type="text" v-model="key.name" />
+    </div>
+    <div class="translation-container">
+      <TranslationComponent :translationListLeft="translationListLeft" />
     </div>
     <ul v-show="isOpen" v-if="isFolder">
       <TreeItem class="item" v-for="model in model.childNodes" :model="model" />
-      <li class="add" @click="addChild">+</li>
     </ul>
   </li>
 </template>
@@ -77,5 +93,12 @@ export default {
 .tree-content {
   display: flex;
   justify-content: space-between;
+}
+.key-container {
+  padding-left: 15px;
+}
+.translation-container {
+  display: flex;
+  /* justify-content: space-around; */
 }
 </style>

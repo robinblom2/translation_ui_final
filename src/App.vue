@@ -31,6 +31,9 @@ export default {
           console.log(err);
         });
     },
+    setSelectedLanguageLeft(enteredSelectedLanguageLeft) {
+      this.selectedLanguageLeft = enteredSelectedLanguageLeft;
+    },
   },
   mounted() {
     this.getDefaultNodes('en');
@@ -40,7 +43,10 @@ export default {
 </script>
 
 <template>
-  <select v-model="selectedLanguageLeft">
+  <select
+    v-model="selectedLanguageLeft"
+    @change="setSelectedLanguageLeft(selectedLanguageLeft)"
+  >
     <option disabled value="">Select Language</option>
     <option v-for="option in selectOptions" :value="option.name">
       {{ option.name }}
@@ -49,7 +55,11 @@ export default {
 
   <ul v-for="node in nodes">
     <div v-if="node.parentId == null">
-      <TreeItem class="item" :model="node" />
+      <TreeItem
+        class="item"
+        :model="node"
+        :selectedLanguageLeft="selectedLanguageLeft"
+      />
     </div>
   </ul>
 </template>
