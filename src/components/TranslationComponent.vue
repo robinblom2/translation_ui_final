@@ -63,6 +63,9 @@ export default {
 </script>
 
 <style>
+.test {
+  padding: 0px 20px;
+}
 .translation {
   border: 2px solid black;
   margin: 10px;

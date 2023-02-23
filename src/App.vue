@@ -43,18 +43,20 @@ export default {
 </script>
 
 <template>
-  <select v-model="selectedLanguageLeft">
-    <option disabled value="">Select Language</option>
-    <option v-for="option in selectOptions" :value="option.name">
-      {{ option.name }}
-    </option>
-  </select>
-  <select v-model="selectedLanguageRight">
-    <option disabled value="">Select Language</option>
-    <option v-for="option in selectOptions" :value="option.name">
-      {{ option.name }}
-    </option>
-  </select>
+  <div class="select-container">
+    <select class="select" v-model="selectedLanguageLeft">
+      <option disabled value="">Select Language</option>
+      <option v-for="option in selectOptions" :value="option.name">
+        {{ option.name }}
+      </option>
+    </select>
+    <select class="select" v-model="selectedLanguageRight">
+      <option disabled value="">Select Language</option>
+      <option v-for="option in selectOptions" :value="option.name">
+        {{ option.name }}
+      </option>
+    </select>
+  </div>
 
   <ul v-for="node in nodes">
     <div v-if="node.parentId == null">
@@ -75,5 +77,13 @@ export default {
 }
 .bold {
   font-weight: bold;
+}
+.select-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 135px;
+}
+.select {
+  margin: 0px 30px;
 }
 </style>
