@@ -10,8 +10,8 @@ export default {
     return {
       nodes: [],
       selectOptions: [],
-      selectedLanguageLeft: '',
-      selectedLanguageRight: '',
+      selectedLanguageLeft: null,
+      selectedLanguageRight: null,
     };
   },
   methods: {
@@ -31,22 +31,25 @@ export default {
           console.log(err);
         });
     },
-    setSelectedLanguageLeft(enteredSelectedLanguageLeft) {
-      this.selectedLanguageLeft = enteredSelectedLanguageLeft;
-    },
+    // setSelectedLanguageLeft(enteredSelectedLanguageLeft) {
+    //   this.selectedLanguageLeft = enteredSelectedLanguageLeft;
+    // },
   },
   mounted() {
-    this.getDefaultNodes('en');
+    this.getDefaultNodes();
     this.getSelectOptions();
   },
 };
 </script>
 
 <template>
-  <select
-    v-model="selectedLanguageLeft"
-    @change="setSelectedLanguageLeft(selectedLanguageLeft)"
-  >
+  <select v-model="selectedLanguageLeft">
+    <option disabled value="">Select Language</option>
+    <option v-for="option in selectOptions" :value="option.name">
+      {{ option.name }}
+    </option>
+  </select>
+  <select v-model="selectedLanguageRight">
     <option disabled value="">Select Language</option>
     <option v-for="option in selectOptions" :value="option.name">
       {{ option.name }}
@@ -59,6 +62,7 @@ export default {
         class="item"
         :model="node"
         :selectedLanguageLeft="selectedLanguageLeft"
+        :selectedLanguageRight="selectedLanguageRight"
       />
     </div>
   </ul>

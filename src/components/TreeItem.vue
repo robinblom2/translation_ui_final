@@ -10,12 +10,16 @@ export default {
   props: {
     model: Object,
     selectedLanguageLeft: String,
+    selectedLanguageRight: String,
   },
   data() {
     return {
       translationListLeft: [],
       translationListRight: [],
+      languageLeft: '',
+      languageRight: '',
       isOpen: false,
+      test: null,
     };
   },
   computed: {
@@ -58,6 +62,12 @@ export default {
   watch: {
     selectedLanguageLeft: function (newVal, oldVal) {
       this.fetchTranslationsLeftTree(newVal);
+      console.log(newVal);
+      this.languageLeft = newVal;
+      console.log(this.languageLeft, 'Inside watch');
+    },
+    selectedLanguageRight: function (newVal, oldVal) {
+      this.languageRight = newVal;
     },
   },
 };
@@ -79,12 +89,27 @@ export default {
     </div>
     <div class="key-container" v-for="key in model.keys">
       <input type="text" v-model="key.name" />
-    </div>
-    <div class="translation-container">
-      <TranslationComponent :translationListLeft="translationListLeft" />
+      <div v-if="languageLeft" class="translation-container">
+        <TranslationComponent
+          :keyId="key.id"
+          :model="model"
+          :selectedLanguage="languageLeft"
+        />
+        <TranslationComponent
+          :keyId="key.id"
+          :model="model"
+          :selectedLanguage="languageRight"
+        />
+      </div>
     </div>
     <ul v-show="isOpen" v-if="isFolder">
-      <TreeItem class="item" v-for="model in model.childNodes" :model="model" />
+      <TreeItem
+        class="item"
+        v-for="model in model.childNodes"
+        :model="model"
+        :selectedLanguageLeft="languageLeft"
+        :selectedLanguageRight="languageRight"
+      />
     </ul>
   </li>
 </template>
@@ -92,13 +117,12 @@ export default {
 <style>
 .tree-content {
   display: flex;
-  justify-content: space-between;
 }
 .key-container {
   padding-left: 15px;
 }
 .translation-container {
   display: flex;
-  /* justify-content: space-around; */
+  justify-content: flex-end;
 }
 </style>
