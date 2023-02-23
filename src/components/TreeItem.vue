@@ -14,8 +14,6 @@ export default {
   },
   data() {
     return {
-      translationListLeft: [],
-      translationListRight: [],
       languageLeft: '',
       languageRight: '',
       isOpen: false,
@@ -45,26 +43,10 @@ export default {
       const response = await api.updateNode(updatedNode);
       console.log(response);
     },
-    async fetchTranslationsLeftTree(language) {
-      await api
-        .fetchNodes(language)
-        .then((res) => {
-          this.translationListLeft = res.data;
-          console.log(
-            `Received ${this.translationListLeft.length} translations for language "${language}".`
-          );
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    },
   },
   watch: {
     selectedLanguageLeft: function (newVal, oldVal) {
-      this.fetchTranslationsLeftTree(newVal);
-      console.log(newVal);
       this.languageLeft = newVal;
-      console.log(this.languageLeft, 'Inside watch');
     },
     selectedLanguageRight: function (newVal, oldVal) {
       this.languageRight = newVal;
