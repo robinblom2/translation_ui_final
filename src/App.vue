@@ -9,6 +9,8 @@ export default {
   data() {
     return {
       nodes: [],
+      translationListLeft: [],
+      translationListRight: [],
       selectOptions: [],
       selectedLanguageLeft: null,
       selectedLanguageRight: null,
@@ -31,9 +33,26 @@ export default {
           console.log(err);
         });
     },
-    // setSelectedLanguageLeft(enteredSelectedLanguageLeft) {
-    //   this.selectedLanguageLeft = enteredSelectedLanguageLeft;
-    // },
+    getTranslationsLeft(locale) {
+      api.fetchNodes(locale).then((res) => {
+        this.translationListLeft = res.data;
+        console.log(this.translationListLeft);
+      });
+    },
+    getTranslationsRight(locale) {
+      api.fetchNodes(locale).then((res) => {
+        this.translationListRight = res.data;
+        console.log(this.translationListRight);
+      });
+    },
+  },
+  watch: {
+    selectedLanguageLeft: function (newVal, oldVal) {
+      this.getTranslationsLeft(newVal);
+    },
+    selectedLanguageRight: function (newVal, oldVal) {
+      this.getTranslationsRight(newVal);
+    },
   },
   mounted() {
     this.getDefaultNodes();
@@ -63,6 +82,8 @@ export default {
       <TreeItem
         class="item"
         :model="node"
+        :translationListLeft="translationListLeft"
+        :translationListRight="translationListRight"
         :selectedLanguageLeft="selectedLanguageLeft"
         :selectedLanguageRight="selectedLanguageRight"
       />

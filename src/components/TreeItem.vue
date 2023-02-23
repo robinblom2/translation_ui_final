@@ -9,6 +9,8 @@ export default {
   },
   props: {
     model: Object,
+    translationListLeft: Array,
+    translationListRight: Array,
     selectedLanguageLeft: String,
     selectedLanguageRight: String,
   },
@@ -76,11 +78,13 @@ export default {
           :keyId="key.id"
           :model="model"
           :selectedLanguage="languageLeft"
+          :translationList="translationListLeft"
         />
         <TranslationComponent
           :keyId="key.id"
           :model="model"
           :selectedLanguage="languageRight"
+          :translationList="translationListRight"
         />
       </div>
     </div>
@@ -91,6 +95,8 @@ export default {
         :model="model"
         :selectedLanguageLeft="languageLeft"
         :selectedLanguageRight="languageRight"
+        :translationListLeft="translationListLeft"
+        :translationListRight="translationListRight"
       />
     </ul>
   </li>
