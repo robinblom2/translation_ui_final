@@ -22,17 +22,11 @@ export default {
     return axios.put(`/test/api/Key/${key.id}`, requestData);
   },
   updateTranslation(translation, keyId, locale) {
-    console.log(translation);
-    console.log(keyId);
-    console.log(locale);
-    console.log(typeof locale)
     const requestData = {
       KeyId: keyId,
       LocaleId: locale,
       Value: translation.value,
     };
-
-    console.log(requestData);
     return axios.put(`/test/api/Translation/${translation.id}`, requestData);
   },
 };

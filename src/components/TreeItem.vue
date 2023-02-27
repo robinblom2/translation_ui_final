@@ -50,9 +50,6 @@ export default {
       console.log(response);
     },
     async updateTranslation(translation, keyId, locale) {
-      console.log(translation);
-      console.log(keyId);
-      console.log(locale);
       const response = await api.updateTranslation(translation, keyId, locale);
       console.log(response);
     },
