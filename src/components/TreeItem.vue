@@ -45,6 +45,17 @@ export default {
       const response = await api.updateNode(updatedNode);
       console.log(response);
     },
+    async updateKeyName(key) {
+      const response = await api.updateKey(key);
+      console.log(response);
+    },
+    async updateTranslation(translation, keyId, locale) {
+      console.log(translation);
+      console.log(keyId);
+      console.log(locale);
+      const response = await api.updateTranslation(translation, keyId, locale);
+      console.log(response);
+    },
   },
   watch: {
     selectedLanguageLeft: function (newVal, oldVal) {
@@ -72,19 +83,21 @@ export default {
       </div>
     </div>
     <div class="key-container" v-for="key in model.keys">
-      <input type="text" v-model="key.name" />
+      <input type="text" v-model="key.name" @keyup.enter="updateKeyName(key)" />
       <div v-if="languageLeft" class="translation-container">
         <TranslationComponent
           :keyId="key.id"
           :model="model"
           :selectedLanguage="languageLeft"
           :translationList="translationListLeft"
+          :updateTranslation="updateTranslation"
         />
         <TranslationComponent
           :keyId="key.id"
           :model="model"
           :selectedLanguage="languageRight"
           :translationList="translationListRight"
+          :updateTranslation="updateTranslation"
         />
       </div>
     </div>
@@ -97,6 +110,7 @@ export default {
         :selectedLanguageRight="languageRight"
         :translationListLeft="translationListLeft"
         :translationListRight="translationListRight"
+        :updateTranslation="updateTranslation"
       />
     </ul>
   </li>

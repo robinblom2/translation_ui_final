@@ -3,7 +3,13 @@
     <div v-for="key in node.keys">
       <div v-if="key.id === this.keyId">
         <div v-for="translation in key.translations">
-          <input type="text" v-model="translation.value" />
+          <input
+            type="text"
+            v-model="translation.value"
+            @keyup.enter="
+              updateTranslation(translation, key.id, translation.localeId)
+            "
+          />
         </div>
       </div>
     </div>
@@ -21,6 +27,9 @@ export default {
     keyId: Number,
     selectedLanguage: String,
     translationList: Array,
+    updateTranslation: {
+      type: Function,
+    },
   },
 };
 </script>
