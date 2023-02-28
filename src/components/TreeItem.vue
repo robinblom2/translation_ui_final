@@ -1,16 +1,17 @@
 <script>
 import api from '../services/Api';
 import TranslationComponent from '../components/TranslationComponent.vue';
+import { useTranslationStore } from '../stores/TranslationStore';
+import EditKeyModal from '../components/EditKeyModal.vue';
 
 export default {
   name: 'TreeItem', // necessary for self-reference
   components: {
     TranslationComponent,
+    EditKeyModal,
   },
   props: {
     model: Object,
-    translationListLeft: Array,
-    translationListRight: Array,
     selectedLanguageLeft: String,
     selectedLanguageRight: String,
   },
@@ -20,7 +21,13 @@ export default {
       languageRight: '',
       isOpen: false,
       test: null,
+      showModal: false,
     };
+  },
+  setup() {
+    const translationStore = useTranslationStore();
+
+    return { translationStore };
   },
   computed: {
     isFolder() {
@@ -49,10 +56,6 @@ export default {
       const response = await api.updateKey(key);
       console.log(response);
     },
-    async updateTranslation(translation, keyId, locale) {
-      const response = await api.updateTranslation(translation, keyId, locale);
-      console.log(response);
-    },
   },
   watch: {
     selectedLanguageLeft: function (newVal, oldVal) {
@@ -66,6 +69,11 @@ export default {
 </script>
 
 <template>
+  <EditKeyModal
+    v-show="showModal"
+    :model="model"
+    @close-modal="showModal = false"
+  />
   <li>
     <div class="tree-content">
       <div class="node-container">
@@ -74,54 +82,67 @@ export default {
           v-model="model.name"
           @keyup.enter="updateNodeName(model.name)"
         />
-        <span v-if="isFolder" @click="toggle" @dbclick="changeType">
+        <button class="edit-btn" @click="showModal = true">Edit Node</button>
+        <span
+          class="expand-btn"
+          v-if="isFolder"
+          @click="toggle"
+          @dbclick="changeType"
+        >
           [{{ isOpen ? '-' : '+' }}]</span
         >
       </div>
     </div>
     <div class="key-container" v-for="key in model.keys">
-      <input type="text" v-model="key.name" @keyup.enter="updateKeyName(key)" />
+      <div class="key-input">
+        <input
+          type="text"
+          v-model="key.name"
+          @keyup.enter="updateKeyName(key)"
+        />
+      </div>
       <div v-if="languageLeft" class="translation-container">
         <TranslationComponent
           :keyId="key.id"
-          :model="model"
-          :selectedLanguage="languageLeft"
-          :translationList="translationListLeft"
-          :updateTranslation="updateTranslation"
+          :translationList="translationStore.translationListLeft"
         />
         <TranslationComponent
           :keyId="key.id"
-          :model="model"
-          :selectedLanguage="languageRight"
-          :translationList="translationListRight"
-          :updateTranslation="updateTranslation"
+          :translationList="translationStore.translationListRight"
         />
       </div>
     </div>
     <ul v-show="isOpen" v-if="isFolder">
       <TreeItem
-        class="item"
         v-for="model in model.childNodes"
         :model="model"
         :selectedLanguageLeft="languageLeft"
         :selectedLanguageRight="languageRight"
-        :translationListLeft="translationListLeft"
-        :translationListRight="translationListRight"
-        :updateTranslation="updateTranslation"
       />
     </ul>
   </li>
 </template>
 
 <style>
+.edit-btn {
+  margin-left: 5px;
+}
 .tree-content {
   display: flex;
 }
 .key-container {
+  display: flex;
+  justify-content: space-between;
   padding-left: 15px;
 }
 .translation-container {
   display: flex;
   justify-content: flex-end;
+}
+.key-input {
+  display: flex;
+}
+.expand-btn {
+  cursor: pointer;
 }
 </style>

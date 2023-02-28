@@ -29,4 +29,24 @@ export default {
     };
     return axios.put(`/test/api/Translation/${translation.id}`, requestData);
   },
+  addKey(keyName, nodeId) {
+    const requestData = {
+      NodeId: nodeId,
+      Name: keyName,
+    };
+    return axios.post('/test/api/Key', requestData);
+  },
+  deleteKey(keyId) {
+    return axios.delete(`/test/api/Key/${keyId}`);
+  },
+  addNode(nodeName, parentId) {
+    const requestData = {
+      ParentId: parentId,
+      Name: nodeName,
+    };
+    return axios.post('/test/api/Node', requestData);
+  },
+  deleteNode(nodeId) {
+    return axios.delete(`/test/api/Node/${nodeId}`);
+  },
 };

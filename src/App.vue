@@ -1,6 +1,7 @@
 <script>
 import api from './services/Api';
 import TreeItem from './components/TreeItem.vue';
+import { useTranslationStore } from '../src/stores/TranslationStore';
 
 export default {
   components: {
@@ -8,21 +9,19 @@ export default {
   },
   data() {
     return {
-      nodes: [],
-      translationListLeft: [],
-      translationListRight: [],
+      // nodes: [],
       selectOptions: [],
       selectedLanguageLeft: null,
       selectedLanguageRight: null,
     };
   },
   methods: {
-    getDefaultNodes(locale) {
-      api.fetchNodes(locale).then((res) => {
-        console.log(res.data);
-        this.nodes = res.data;
-      });
-    },
+    // getDefaultNodes(locale) {
+    //   api.fetchNodes(locale).then((res) => {
+    //     console.log(res.data);
+    //     this.nodes = res.data;
+    //   });
+    // },
     getSelectOptions() {
       api
         .fetchSelectOptions()
@@ -33,30 +32,23 @@ export default {
           console.log(err);
         });
     },
-    getTranslationsLeft(locale) {
-      api.fetchNodes(locale).then((res) => {
-        this.translationListLeft = res.data;
-        console.log(this.translationListLeft);
-      });
-    },
-    getTranslationsRight(locale) {
-      api.fetchNodes(locale).then((res) => {
-        this.translationListRight = res.data;
-        console.log(this.translationListRight);
-      });
-    },
   },
   watch: {
     selectedLanguageLeft: function (newVal, oldVal) {
-      this.getTranslationsLeft(newVal);
+      this.translationStore.getTranslationsLeft(newVal);
     },
     selectedLanguageRight: function (newVal, oldVal) {
-      this.getTranslationsRight(newVal);
+      this.translationStore.getTranslationsRight(newVal);
     },
   },
   mounted() {
-    this.getDefaultNodes();
+    this.translationStore.getDefaultNodes();
     this.getSelectOptions();
+  },
+  setup() {
+    const translationStore = useTranslationStore();
+
+    return { translationStore };
   },
 };
 </script>
@@ -77,13 +69,10 @@ export default {
     </select>
   </div>
 
-  <ul v-for="node in nodes">
+  <ul v-for="node in translationStore.nodes">
     <div v-if="node.parentId == null">
       <TreeItem
-        class="item"
         :model="node"
-        :translationListLeft="translationListLeft"
-        :translationListRight="translationListRight"
         :selectedLanguageLeft="selectedLanguageLeft"
         :selectedLanguageRight="selectedLanguageRight"
       />

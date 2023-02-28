@@ -7,7 +7,11 @@
             type="text"
             v-model="translation.value"
             @keyup.enter="
-              updateTranslation(translation, key.id, translation.localeId)
+              translationStore.updateTranslation(
+                translation,
+                key.id,
+                translation.localeId
+              )
             "
           />
         </div>
@@ -17,19 +21,21 @@
 </template>
 
 <script>
+import { useTranslationStore } from '../stores/TranslationStore';
+
 export default {
   name: 'TranslationComponent',
   data() {
     return {};
   },
   props: {
-    model: Object,
     keyId: Number,
-    selectedLanguage: String,
     translationList: Array,
-    updateTranslation: {
-      type: Function,
-    },
+  },
+  setup() {
+    const translationStore = useTranslationStore();
+
+    return { translationStore };
   },
 };
 </script>
