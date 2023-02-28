@@ -9,19 +9,12 @@ export default {
   },
   data() {
     return {
-      // nodes: [],
       selectOptions: [],
       selectedLanguageLeft: null,
       selectedLanguageRight: null,
     };
   },
   methods: {
-    // getDefaultNodes(locale) {
-    //   api.fetchNodes(locale).then((res) => {
-    //     console.log(res.data);
-    //     this.nodes = res.data;
-    //   });
-    // },
     getSelectOptions() {
       api
         .fetchSelectOptions()
