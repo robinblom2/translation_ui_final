@@ -50,7 +50,11 @@ export default {
 </script>
 
 <template>
-  <RootNodeModal v-show="showRootNodeModal" :model="model" @close-modal="showRootNodeModal = false"/>
+  <RootNodeModal
+    v-show="showRootNodeModal"
+    :model="model"
+    @close-modal="showRootNodeModal = false"
+  />
   <button @click="showRootNodeModal = true">Add Root Node</button>
   <div class="select-container">
     <select class="select" v-model="selectedLanguageLeft">
@@ -66,8 +70,8 @@ export default {
       </option>
     </select>
   </div>
-
-  <ul v-for="node in translationStore.nodes">
+  <hr class="line-divider" />
+  <ul class="node-list" v-for="node in translationStore.nodes">
     <div v-if="node.parentId == null">
       <TreeItem
         :model="node"
@@ -90,8 +94,13 @@ export default {
   display: flex;
   justify-content: flex-end;
   margin-right: 135px;
+  padding-bottom: 20px;
 }
 .select {
   margin: 0px 30px;
+}
+.line-divider {
+  width: 100%;
+  margin-bottom: 20px;
 }
 </style>

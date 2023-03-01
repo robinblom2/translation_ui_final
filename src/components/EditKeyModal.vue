@@ -1,15 +1,43 @@
 <template>
   <div class="modal-overlay" @click="$emit('close-modal')">
     <div class="modal" @click.stop>
+      <div class="close" @click="$emit('close-modal')">
+        <p class="close-btn">X</p>
+      </div>
+      <div class="node-container">
+        <div class="add-node-container">
+          <h2 class="heading">Modify node:</h2>
+          <div style="align-self: flex-start">
+            <input
+              type="text"
+              placeholder="Specify a nodename..."
+              v-model="newNodeName"
+            />
+            <button class="btn" @click="addNode(newNodeName, model.id)">
+              Add
+            </button>
+          </div>
+        </div>
+        <div class="remove-node-container">
+          <button @click="removeNode(model.id), $emit('close-modal')">
+            Remove
+          </button>
+        </div>
+      </div>
+      <hr style="width: 100%" />
       <div class="key-container">
         <div class="add-key-container">
-          <h6>Add Key:</h6>
-          <p>Specify a keyname:</p>
-          <input type="text" v-model="newKeyName" />
-          <button @click="addKey(newKeyName, model.id)">Add</button>
+          <h2 class="heading">Modify keys:</h2>
+          <input
+            type="text"
+            v-model="newKeyName"
+            placeholder="Specify a keyname..."
+          />
+          <button class="btn add-btn" @click="addKey(newKeyName, model.id)">
+            Add key
+          </button>
         </div>
         <div class="remove-key-container">
-          <h6>Remove Key:</h6>
           <div class="modal-key">
             <select class="select" v-model="selectedKey">
               <option disabled value="">Select Key</option>
@@ -17,31 +45,12 @@
                 {{ key.name }}
               </option>
             </select>
-            <button class="remove-btn" @click="removeKey(selectedKey)">
-              Remove
+            <button class="btn remove-btn" @click="removeKey(selectedKey)">
+              Remove key
             </button>
           </div>
         </div>
       </div>
-      <hr />
-      <div class="node-container">
-        <div class="add-node-container">
-          <input
-            type="text"
-            placeholder="Specify a nodename..."
-            v-model="newNodeName"
-          />
-          <button @click="addNode(newNodeName, model.id)">Add Node</button>
-        </div>
-        <div class="remove-node-container">
-          <button @click="removeNode(model.id), $emit('close-modal')">
-            Remove Node
-          </button>
-        </div>
-      </div>
-    </div>
-    <div class="close" @click="$emit('close-modal')">
-      <p class="close-btn">X</p>
     </div>
   </div>
 </template>
@@ -94,36 +103,24 @@ export default {
 <style scoped>
 .key-container {
   display: flex;
-  width: 100%;
+  width: 600px;
+  flex: 1;
   justify-content: space-around;
+  align-items: center;
 }
 .node-container {
   display: flex;
-  flex-direction: row;
-  width: 100%;
-  height: 100%;
-  justify-content: space-between;
-  align-items: flex-end;
-  padding: 10px;
+  width: 600px;
+  flex: 1;
+  justify-content: space-around;
+  align-items: center;
 }
 .close-btn {
-  color: white;
-}
-.remove-key-container {
-  margin: 30px;
-}
-.key-name {
+  color: black;
+  font-weight: bold;
   margin: 0;
 }
-.remove-btn {
-  height: 20px;
-}
-.modal-key {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-}
+
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -139,18 +136,19 @@ export default {
 .modal {
   text-align: center;
   background-color: white;
-  height: 500px;
-  width: 1000px;
+  height: 250px;
+  width: 600px;
   margin-top: 10%;
   border-radius: 10px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: space-around;
 }
 .close {
-  margin: 10% 0 0 16px;
+  /* margin: 5% 0 0 5px; */
   cursor: pointer;
+  display: flex;
+  align-self: flex-end;
+  margin: 0px 8px;
 }
 
 .close-img {
@@ -170,5 +168,25 @@ h6 {
 p {
   font-size: 16px;
   margin: 20px 0;
+}
+
+.heading {
+  text-align: left;
+}
+.select {
+  margin: 0;
+}
+.btn {
+  margin-left: 5px;
+}
+.remove-node-container {
+  align-self: flex-end;
+  padding: 3px;
+}
+.add-node-container {
+  display: flex;
+  flex-direction: column;
+  align-self: flex-start;
+  width: 70%;
 }
 </style>

@@ -123,7 +123,7 @@ export default {
   </li>
 </template>
 
-<style>
+<style scoped>
 .edit-btn {
   margin-left: 5px;
 }
