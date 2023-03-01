@@ -56,6 +56,10 @@ export default {
       const response = await api.updateKey(key);
       console.log(response);
     },
+    closeModal() {
+      this.showModal = false;
+      this.translationStore.getDefaultNodes();
+    },
   },
   watch: {
     selectedLanguageLeft: function (newVal, oldVal) {
@@ -69,11 +73,7 @@ export default {
 </script>
 
 <template>
-  <EditKeyModal
-    v-show="showModal"
-    :model="model"
-    @close-modal="showModal = false"
-  />
+  <EditKeyModal v-show="showModal" :model="model" @close-modal="closeModal" />
   <li>
     <div class="tree-content">
       <div class="node-container">

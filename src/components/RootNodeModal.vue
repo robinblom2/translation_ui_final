@@ -1,41 +1,16 @@
 <template>
   <div class="modal-overlay" @click="$emit('close-modal')">
     <div class="modal" @click.stop>
-      <div class="key-container">
-        <div class="add-key-container">
-          <h6>Add Key:</h6>
-          <p>Specify a keyname:</p>
-          <input type="text" v-model="newKeyName" />
-          <button @click="addKey(newKeyName, model.id)">Add</button>
-        </div>
-        <div class="remove-key-container">
-          <h6>Remove Key:</h6>
-          <div class="modal-key">
-            <select class="select" v-model="selectedKey">
-              <option disabled value="">Select Key</option>
-              <option v-for="key in model.keys" :value="key">
-                {{ key.name }}
-              </option>
-            </select>
-            <button class="remove-btn" @click="removeKey(selectedKey)">
-              Remove
-            </button>
-          </div>
-        </div>
-      </div>
-      <hr />
       <div class="node-container">
-        <div class="add-node-container">
+        <h2>Add Root node</h2>
+        <div>
           <input
             type="text"
             placeholder="Specify a nodename..."
-            v-model="newNodeName"
+            v-model="rootNodeName"
           />
-          <button @click="addNode(newNodeName, model.id)">Add Node</button>
-        </div>
-        <div class="remove-node-container">
-          <button @click="removeNode(model.id), $emit('close-modal')">
-            Remove Node
+          <button @click="addNode(rootNodeName), $emit('close-modal')">
+            Add Node
           </button>
         </div>
       </div>
@@ -56,31 +31,15 @@ export default {
   },
   data() {
     return {
-      newNodeName: '',
-      newKeyName: '',
-      selectedKey: [],
+      rootNodeName: '',
     };
   },
   methods: {
-    async addKey(keyName, nodeId) {
-      const response = await api.addKey(keyName, nodeId);
-      this.newKeyName = '';
-      console.log(response);
+    async addNode(nodeName) {
+      const response = await api.addNode(nodeName, null);
+      this.rootNodeName = '';
       this.translationStore.getDefaultNodes();
-    },
-    async removeKey(selectedKey) {
-      const response = await api.deleteKey(selectedKey.id);
-      this.translationStore.getDefaultNodes();
-    },
-    async addNode(nodeName, parentId) {
-      const response = await api.addNode(nodeName, parentId);
-      this.newNodeName = '';
       console.log(response);
-    },
-    async removeNode(nodeId) {
-      const response = await api.deleteNode(nodeId);
-      console.log(response);
-      this.translationStore.getDefaultNodes();
     },
   },
   setup() {
@@ -99,11 +58,11 @@ export default {
 }
 .node-container {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   width: 100%;
   height: 100%;
   justify-content: space-between;
-  align-items: flex-end;
+  align-items: center;
   padding: 10px;
 }
 .close-btn {
@@ -139,8 +98,8 @@ export default {
 .modal {
   text-align: center;
   background-color: white;
-  height: 500px;
-  width: 1000px;
+  height: 100px;
+  width: 500px;
   margin-top: 10%;
   border-radius: 10px;
   display: flex;

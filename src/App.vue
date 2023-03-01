@@ -1,17 +1,20 @@
 <script>
 import api from './services/Api';
 import TreeItem from './components/TreeItem.vue';
+import RootNodeModal from './components/RootNodeModal.vue';
 import { useTranslationStore } from '../src/stores/TranslationStore';
 
 export default {
   components: {
     TreeItem,
+    RootNodeModal,
   },
   data() {
     return {
       selectOptions: [],
       selectedLanguageLeft: null,
       selectedLanguageRight: null,
+      showRootNodeModal: false,
     };
   },
   methods: {
@@ -47,6 +50,8 @@ export default {
 </script>
 
 <template>
+  <RootNodeModal v-show="showRootNodeModal" :model="model" @close-modal="showRootNodeModal = false"/>
+  <button @click="showRootNodeModal = true">Add Root Node</button>
   <div class="select-container">
     <select class="select" v-model="selectedLanguageLeft">
       <option disabled value="">Select Language</option>
