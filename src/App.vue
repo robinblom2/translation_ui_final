@@ -2,12 +2,15 @@
 import api from './services/Api';
 import TreeItem from './components/TreeItem.vue';
 import RootNodeModal from './components/RootNodeModal.vue';
+import HandleLocaleComponent from './components/HandleLocaleComponent.vue';
 import { useTranslationStore } from '../src/stores/TranslationStore';
 
 export default {
   components: {
     TreeItem,
     RootNodeModal,
+    HandleLocaleComponent,
+    
   },
   data() {
     return {
@@ -15,6 +18,7 @@ export default {
       selectedLanguageLeft: null,
       selectedLanguageRight: null,
       showRootNodeModal: false,
+      showLocaleModal: false,
     };
   },
   methods: {
@@ -50,6 +54,7 @@ export default {
 </script>
 
 <template>
+  <HandleLocaleComponent :selectOptions="selectOptions"/>
   <RootNodeModal
     v-show="showRootNodeModal"
     :model="model"

@@ -49,4 +49,22 @@ export default {
   deleteNode(nodeId) {
     return axios.delete(`/test/api/Node/${nodeId}`);
   },
+
+  // Locales
+  AddLocale(locale) {
+    const requestData = {
+      Name: locale.name,
+    };
+    console.log(requestData);
+    return axios.post('/test/api/Locale', requestData);
+  },
+  DeleteLocale(id) {
+    return axios.delete(`/test/api/Locale/${id}`);
+  },
+  UpdateLocale(locale) {
+    const requestData = {
+      Name: locale.name,
+    };
+    return axios.put(`/test/api/Locale/${locale.id}`, requestData);
+  },
 };
