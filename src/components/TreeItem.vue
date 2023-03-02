@@ -106,6 +106,8 @@ export default {
           :keyId="key.id"
           :translationList="translationStore.translationListLeft"
         />
+      </div>
+      <div v-if="languageRight" class="translation-container">
         <TranslationComponent
           :keyId="key.id"
           :translationList="translationStore.translationListRight"
