@@ -17,7 +17,7 @@ body {
   background-repeat: no-repeat;
   background-position: right;
   background-blend-mode: difference;
-  backdrop-filter: blur(2px);
+  /* backdrop-filter: blur(2px); */
 }
 
 a,
