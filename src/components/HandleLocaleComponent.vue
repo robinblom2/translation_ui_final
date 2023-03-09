@@ -1,32 +1,46 @@
 <template>
   <div>
-    <div>
-      <button @click="openModal">Handle Locales</button>
-    </div>
+    <button class="locale-btn" @click="openModal">Handle Locales</button>
     <div class="modal" v-if="showModal" @click.self="closeModal">
       <div class="modal-content">
-        <button type="button" class="close-button" @click="closeModal">X</button>
+        <button type="button" class="close-button" @click="closeModal">
+          X
+        </button>
         <h2>Create new Locale</h2>
         <form @submit="createLocale">
           <label for="locale-name">Locale Name: </label>
-          <input type="text" id="locale-name" v-model="localeName" required>
+          <input type="text" id="locale-name" v-model="localeName" required />
           <button type="submit">Create</button>
         </form>
-        <br>
+        <br />
         <h2>Update or Delete Locale</h2>
         <label for="locale-select">Choose a locale:</label>
         <select id="locale-select" v-model="selectedLocale">
-          <option v-for="option in selectOptions" :value="option">{{ option.name }}</option>
+          <option v-for="option in selectOptions" :value="option">
+            {{ option.name }}
+          </option>
         </select>
         <div v-if="selectedLocale">
           <h2>Selected Locale: {{ selectedLocale.name }}</h2>
           <form @submit.prevent="updateLocale(selectedLocale)">
             <label for="locale-name">Locale Name:</label>
-            <input type="text" id="locale-name" v-model="selectedLocale.name" required>
+            <input
+              type="text"
+              id="locale-name"
+              v-model="selectedLocale.name"
+              required
+            />
             <button type="submit">Update</button>
-            <button @click.prevent="deleteLocale(selectedLocale.id)" class="delete-button">Delete</button>
+            <button
+              @click.prevent="deleteLocale(selectedLocale.id)"
+              class="delete-button"
+            >
+              Delete
+            </button>
           </form>
-          <div v-if="updateSuccess" class="success-message">You've successfully updated a locale.</div>
+          <div v-if="updateSuccess" class="success-message">
+            You've successfully updated a locale.
+          </div>
         </div>
       </div>
     </div>
@@ -46,7 +60,7 @@ export default {
       selectedLocale: null,
       localeName: '',
       updateSuccess: false,
-    }
+    };
   },
   methods: {
     openModal() {
@@ -80,17 +94,17 @@ export default {
       } catch (err) {
         console.log(err);
       }
-    }
+    },
   },
   setup() {
     const localeStore = useLocaleStore();
 
-    // kolla om datan behöver returneras här. 
+    // kolla om datan behöver returneras här.
     return {
       localeStore,
     };
-  }
-}
+  },
+};
 </script>
 
 <style scoped>
@@ -112,7 +126,7 @@ export default {
   flex-direction: column;
   background-color: white;
   padding: 2rem;
-  border-radius: .5rem;
+  border-radius: 0.5rem;
 }
 
 .locale-name {
@@ -124,7 +138,14 @@ export default {
 .close-button {
   width: 8%;
   align-self: flex-end;
-
+}
+.locale-btn {
+  cursor: pointer;
+  height: 22px;
+  padding: 0px;
+  margin: 0;
+  border: none;
+  margin-right: 20px;
 }
 
 .delete-button {

@@ -74,10 +74,11 @@ export default {
 
 <template>
   <EditKeyModal v-show="showModal" :model="model" @close-modal="closeModal" />
-  <li>
+  <li class="list-item">
     <div class="tree-content">
       <div class="node-container">
         <input
+          class="input"
           type="text"
           v-model="model.name"
           @keyup.enter="updateNodeName(model.name)"
@@ -94,8 +95,9 @@ export default {
       </div>
     </div>
     <div class="key-container" v-for="key in model.keys">
-      <div class="key-input">
+      <div>
         <input
+          class="input"
           type="text"
           v-model="key.name"
           @keyup.enter="updateKeyName(key)"
@@ -141,10 +143,16 @@ export default {
   display: flex;
   justify-content: flex-end;
 }
-.key-input {
-  display: flex;
-}
 .expand-btn {
   cursor: pointer;
+  color: white;
+  font-weight: bold;
+}
+.list-item {
+  color:white;
+}
+.input {
+  padding: 3px;
+  border-radius: 3px;
 }
 </style>

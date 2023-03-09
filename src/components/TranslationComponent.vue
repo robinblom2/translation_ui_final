@@ -4,6 +4,7 @@
       <div v-if="key.id === this.keyId">
         <div v-for="translation in key.translations">
           <input
+            class="input"
             type="text"
             v-model="translation.value"
             @keyup.enter="
@@ -41,11 +42,9 @@ export default {
 </script>
 
 <style>
-.test {
-  padding: 0px 20px;
-}
-.translation {
-  border: 2px solid black;
-  margin: 10px;
+.input {
+  padding: 3px;
+  border-radius: 3px;
+  border: 1px solid black;
 }
 </style>

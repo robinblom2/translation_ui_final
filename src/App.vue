@@ -10,7 +10,6 @@ export default {
     TreeItem,
     RootNodeModal,
     HandleLocaleComponent,
-    
   },
   data() {
     return {
@@ -54,13 +53,18 @@ export default {
 </script>
 
 <template>
-  <HandleLocaleComponent :selectOptions="selectOptions"/>
-  <RootNodeModal
-    v-show="showRootNodeModal"
-    :model="model"
-    @close-modal="showRootNodeModal = false"
-  />
-  <button @click="showRootNodeModal = true">Add Root Node</button>
+  <div class="edit-btn-container">
+    <HandleLocaleComponent :selectOptions="selectOptions" />
+    <RootNodeModal
+      v-show="showRootNodeModal"
+      :model="model"
+      @close-modal="showRootNodeModal = false"
+    />
+
+    <button class="rootnode-btn" @click="showRootNodeModal = true">
+      Add Root Node
+    </button>
+  </div>
   <div class="select-container">
     <select class="select" v-model="selectedLanguageLeft">
       <option disabled value="">Select Language</option>
@@ -103,9 +107,22 @@ export default {
 }
 .select {
   margin: 0px 30px;
+  border-radius: 3px;
 }
 .line-divider {
   width: 100%;
   margin-bottom: 20px;
+}
+.edit-btn-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.rootnode-btn {
+  cursor: pointer;
+  height: 22px;
+  padding: 0;
+  margin: 0;
+  border: none;
 }
 </style>
