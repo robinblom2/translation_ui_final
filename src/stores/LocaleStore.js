@@ -27,11 +27,19 @@ export const useLocaleStore = defineStore('localeStore', {
     async deleteLocale(id) {
       try {
         const res = await api.DeleteLocale(id);
+        
         // Filter out the deleted locale from the selectOptions array
-        const index = this.selectOptions.findIndex(option => option.id === id);
+        // index = a.findIndex(x => x.prop2 ==="yutu");
+        console.log('detta är typen av idet', typeof id)
+        console.log('typen av grejjem', this.selectOptions)
+        const index = this.selectOptions.findIndex(option => option.id == id);
+        console.log('id!!', id)
+        console.log("index: ", index);
         if (index !== -1) {
           this.selectOptions.splice(index, 1);
+          // console.log(this.selectOptions);
         };
+        
       } catch(err){
         console.log(err);
       }

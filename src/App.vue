@@ -4,6 +4,7 @@ import TreeItem from './components/TreeItem.vue';
 import RootNodeModal from './components/RootNodeModal.vue';
 import HandleLocaleComponent from './components/HandleLocaleComponent.vue';
 import { useTranslationStore } from '../src/stores/TranslationStore';
+import { useLocaleStore } from './stores/LocaleStore';
 
 export default {
   components: {
@@ -31,6 +32,7 @@ export default {
           console.log(err);
         });
     },
+
   },
   watch: {
     selectedLanguageLeft: function (newVal, oldVal) {
@@ -42,12 +44,13 @@ export default {
   },
   mounted() {
     this.translationStore.getDefaultNodes();
-    this.getSelectOptions();
+    this.localeStore.getSelectOptions();
   },
   setup() {
     const translationStore = useTranslationStore();
+    const localeStore = useLocaleStore();
 
-    return { translationStore };
+    return { translationStore, localeStore };
   },
 };
 </script>
@@ -68,13 +71,13 @@ export default {
   <div class="select-container">
     <select class="select" v-model="selectedLanguageLeft">
       <option disabled value="">Select Language</option>
-      <option v-for="option in selectOptions" :value="option.name">
+      <option v-for="option in localeStore.selectOptions" :value="option.name">
         {{ option.name }}
       </option>
     </select>
     <select class="select" v-model="selectedLanguageRight">
       <option disabled value="">Select Language</option>
-      <option v-for="option in selectOptions" :value="option.name">
+      <option v-for="option in localeStore.selectOptions" :value="option.name">
         {{ option.name }}
       </option>
     </select>
