@@ -17,13 +17,13 @@ export const useTranslationStore = defineStore('translationStore', {
       });
     },
     async getTranslationsLeft(locale) {
-      await api.fetchNodes(locale).then((res) => {
+      await api.fetchTranslations(locale).then((res) => {
         this.translationListLeft = res.data;
         console.log(this.translationListLeft);
       });
     },
     async getTranslationsRight(locale) {
-      await api.fetchNodes(locale).then((res) => {
+      await api.fetchTranslations(locale).then((res) => {
         this.translationListRight = res.data;
         console.log(this.translationListRight);
       });

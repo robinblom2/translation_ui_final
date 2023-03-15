@@ -4,6 +4,9 @@ export default {
   async fetchNodes(locale) {
     return await axios.get('/test/api/admin/Nodes?locale=' + locale);
   },
+  async fetchTranslations(locale){
+    return await axios.get(`/test/api/admin/Translations/${locale}/test`)
+  },
   fetchSelectOptions() {
     return axios.get('/test/api/admin/Locales');
   },
