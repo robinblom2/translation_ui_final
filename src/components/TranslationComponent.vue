@@ -1,23 +1,10 @@
 <template>
-  <div class="test" v-for="node in translationList">
-    <div v-for="key in node.keys">
-      <div v-if="key.id === this.keyId">
-        <div v-for="translation in key.translations">
-          <input
-            class="input"
-            type="text"
-            v-model="translation.value"
-            @keyup.enter="
-              translationStore.updateTranslation(
-                translation,
-                key.id,
-                translation.localeId
-              )
-            "
-          />
-        </div>
-      </div>
-    </div>
+  <div class="parent">
+    <input
+      v-model="translationValue.value"
+      @input="updateTranslation"
+      @keyup.enter="updateTranslationRequest"
+    />
   </div>
 </template>
 
@@ -26,17 +13,52 @@ import { useTranslationStore } from '../stores/TranslationStore';
 
 export default {
   name: 'TranslationComponent',
-  data() {
-    return {};
-  },
   props: {
     keyId: Number,
     translationList: Array,
   },
   setup() {
     const translationStore = useTranslationStore();
-
     return { translationStore };
+  },
+  data() {
+    return {
+      translationValue: Object,
+    };
+  },
+  created() {
+    this.setTranslationValue();
+  },
+  methods: {
+    setTranslationValue() {
+      const translationObj = this.translationList.find(
+        (t) => t.keyId == this.keyId
+      );
+
+      if (translationObj) {
+        this.translationValue = {
+          value: translationObj.value,
+          localeId: translationObj.localeId,
+          translationId: translationObj.id,
+          keyId: translationObj.keyId,
+        };
+      }
+    },
+    async updateTranslationRequest() {
+      if (this.translationValue) {
+        // console.log(this.translationValue.value);
+        // console.log(this.keyId);
+        // console.log(this.translationValue.localeId);
+
+        await this.translationStore.updateTranslation(
+          this.translationValue,
+          this.translationValue.translationId
+        );
+      }
+    },
+    updateTranslation(event) {
+      this.translationValue.value = event.target.value;
+    },
   },
 };
 </script>

@@ -4,8 +4,8 @@ export default {
   async fetchNodes(locale) {
     return await axios.get('/test/api/admin/Nodes?locale=' + locale);
   },
-  async fetchTranslations(locale){
-    return await axios.get(`/test/api/admin/Translations/${locale}/test`)
+  async fetchTranslations(locale) {
+    return await axios.get(`/test/api/admin/Translations/${locale}/test`);
   },
   fetchSelectOptions() {
     return axios.get('/test/api/admin/Locales');
@@ -24,14 +24,14 @@ export default {
     };
     return axios.put(`/test/api/admin/Keys/${key.id}`, requestData);
   },
-  updateTranslation(translation, keyId, locale) {
+  updateTranslation(translation, translationId) {
     const requestData = {
-      KeyId: keyId,
-      LocaleId: locale,
+      KeyId: translation.keyId,
+      LocaleId: translation.localeId,
       Value: translation.value,
     };
     return axios.put(
-      `/test/api/admin/Translations/${translation.id}`,
+      `/test/api/admin/Translations/${translationId}`,
       requestData
     );
   },

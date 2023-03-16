@@ -17,6 +17,7 @@ export const useTranslationStore = defineStore('translationStore', {
       });
     },
     async getTranslationsLeft(locale) {
+      console.log(this.selectedLanguageLeft);
       await api.fetchTranslations(locale).then((res) => {
         this.translationListLeft = res.data;
         console.log(this.translationListLeft);
@@ -28,8 +29,8 @@ export const useTranslationStore = defineStore('translationStore', {
         console.log(this.translationListRight);
       });
     },
-    async updateTranslation(translation, keyId, locale) {
-      const response = await api.updateTranslation(translation, keyId, locale);
+    async updateTranslation(translation, translationId) {
+      const response = await api.updateTranslation(translation, translationId);
       console.log(response);
     },
   },

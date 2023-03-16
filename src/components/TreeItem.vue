@@ -31,7 +31,10 @@ export default {
   },
   computed: {
     isFolder() {
-      return this.model.childNodes && this.model.childNodes.length;
+      return (
+        (this.model.childNodes && this.model.childNodes.length) ||
+        (this.model.keys && this.model.keys.length)
+      );
     },
   },
   methods: {
@@ -73,7 +76,7 @@ export default {
 </script>
 
 <template>
-  <EditKeyModal v-show="showModal" :model="model" @close-modal="closeModal" />
+  <EditKeyModal v-if="showModal" :model="model" @close-modal="closeModal" />
   <li class="list-item">
     <div class="tree-content">
       <div class="node-container">
@@ -94,7 +97,7 @@ export default {
         >
       </div>
     </div>
-    <div class="key-container" v-for="key in model.keys">
+    <div class="key-container" v-for="key in model.keys" v-if="isOpen">
       <div>
         <input
           class="input"
@@ -107,6 +110,7 @@ export default {
         <TranslationComponent
           :keyId="key.id"
           :translationList="translationStore.translationListLeft"
+          :languageLeft="languageLeft"
         />
       </div>
       <div v-if="languageRight" class="translation-container">
@@ -149,7 +153,7 @@ export default {
   font-weight: bold;
 }
 .list-item {
-  color:white;
+  color: white;
 }
 .input {
   padding: 3px;

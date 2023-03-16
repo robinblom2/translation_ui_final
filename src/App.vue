@@ -32,7 +32,6 @@ export default {
           console.log(err);
         });
     },
-
   },
   watch: {
     selectedLanguageLeft: function (newVal, oldVal) {
@@ -56,42 +55,48 @@ export default {
 </script>
 
 <template>
-  <div class="edit-btn-container">
-    <HandleLocaleComponent :selectOptions="selectOptions" />
-    <RootNodeModal
-      v-show="showRootNodeModal"
-      :model="model"
-      @close-modal="showRootNodeModal = false"
-    />
-
-    <button class="rootnode-btn" @click="showRootNodeModal = true">
-      Add Root Node
-    </button>
-  </div>
-  <div class="select-container">
-    <select class="select" v-model="selectedLanguageLeft">
-      <option disabled value="">Select Language</option>
-      <option v-for="option in localeStore.selectOptions" :value="option.name">
-        {{ option.name }}
-      </option>
-    </select>
-    <select class="select" v-model="selectedLanguageRight">
-      <option disabled value="">Select Language</option>
-      <option v-for="option in localeStore.selectOptions" :value="option.name">
-        {{ option.name }}
-      </option>
-    </select>
-  </div>
-  <hr class="line-divider" />
-  <ul class="node-list" v-for="node in translationStore.nodes">
-    <div v-if="node.parentId == null">
-      <TreeItem
-        :model="node"
-        :selectedLanguageLeft="selectedLanguageLeft"
-        :selectedLanguageRight="selectedLanguageRight"
+    <div class="edit-btn-container">
+      <HandleLocaleComponent :selectOptions="selectOptions" />
+      <RootNodeModal
+        v-show="showRootNodeModal"
+        :model="model"
+        @close-modal="showRootNodeModal = false"
       />
+
+      <button class="rootnode-btn" @click="showRootNodeModal = true">
+        Add Root Node
+      </button>
     </div>
-  </ul>
+    <div class="select-container">
+      <select class="select" v-model="selectedLanguageLeft">
+        <option disabled value="">Select Language</option>
+        <option
+          v-for="option in localeStore.selectOptions"
+          :value="option.name"
+        >
+          {{ option.name }}
+        </option>
+      </select>
+      <select class="select" v-model="selectedLanguageRight">
+        <option disabled value="">Select Language</option>
+        <option
+          v-for="option in localeStore.selectOptions"
+          :value="option.name"
+        >
+          {{ option.name }}
+        </option>
+      </select>
+    </div>
+    <hr class="line-divider" />
+    <ul class="node-list" v-for="node in translationStore.nodes">
+      <div v-if="node.parentId == null">
+        <TreeItem
+          :model="node"
+          :selectedLanguageLeft="selectedLanguageLeft"
+          :selectedLanguageRight="selectedLanguageRight"
+        />
+      </div>
+    </ul>
 </template>
 
 <style>
