@@ -78,9 +78,11 @@ export default {
     </select>
   </div>
   <hr class="line-divider" />
-  <ul class="node-list" v-for="node in translationStore.nodes">
-    <div v-if="node.parentId == null">
-      <TreeItem :model="node" />
+  <ul class="node-list">
+    <div v-for="node in translationStore.nodes">
+      <div v-if="node.parentId == null">
+        <TreeItem :model="node" />
+      </div>
     </div>
   </ul>
 </template>
