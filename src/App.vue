@@ -44,41 +44,50 @@ export default {
 </script>
 
 <template>
-  <div class="edit-btn-container">
-    <HandleLocaleComponent />
-    <RootNodeModal
-      v-show="showRootNodeModal"
-      @close-modal="showRootNodeModal = false"
-    />
+  <div class="d-flex justify-content-between">
+    <div class="d-flex">
+      <HandleLocaleComponent />
+      <RootNodeModal
+        v-show="showRootNodeModal"
+        @close-modal="showRootNodeModal = false"
+      />
 
-    <button class="rootnode-btn" @click="showRootNodeModal = true">
-      Add Root Node
-    </button>
+      <button @click="showRootNodeModal = true">Add Root Node</button>
+    </div>
+    <div class="me-4">
+      <select
+        class="me-5"
+        v-model="translationStore.selectedLanguageLeft"
+        @change="translationStore.getTranslationsLeft($event)"
+      >
+        <option disabled value="">Select Language</option>
+        <option
+          v-for="option in localeStore.selectOptions"
+          :value="option.name"
+        >
+          {{ option.name }}
+        </option>
+      </select>
+      <select
+        v-model="translationStore.selectedLanguageRight"
+        @change="translationStore.getTranslationsRight($event)"
+      >
+        <option disabled value="">Select Language</option>
+        <option
+          v-for="option in localeStore.selectOptions"
+          :value="option.name"
+        >
+          {{ option.name }}
+        </option>
+      </select>
+    </div>
   </div>
-  <div class="select-container">
-    <select
-      class="select"
-      v-model="translationStore.selectedLanguageLeft"
-      @change="translationStore.getTranslationsLeft($event)"
-    >
-      <option disabled value="">Select Language</option>
-      <option v-for="option in localeStore.selectOptions" :value="option.name">
-        {{ option.name }}
-      </option>
-    </select>
-    <select
-      class="select"
-      v-model="translationStore.selectedLanguageRight"
-      @change="translationStore.getTranslationsRight($event)"
-    >
-      <option disabled value="">Select Language</option>
-      <option v-for="option in localeStore.selectOptions" :value="option.name">
-        {{ option.name }}
-      </option>
-    </select>
+  <hr class="border border-white border-1 opacity-50 mb-5 mt-5" />
+  <div v-if="translationStore.loadingNodes">
+    <div class="spinner-border text-light" role="status"></div>
+    <span class="text-white ps-3">Fetching nodes...</span>
   </div>
-  <hr class="line-divider" />
-  <ul class="node-list">
+  <ul>
     <div v-for="node in translationStore.nodes">
       <div v-if="node.parentId == null">
         <TreeItem :model="node" />
@@ -86,39 +95,3 @@ export default {
     </div>
   </ul>
 </template>
-
-<style>
-.item {
-  cursor: pointer;
-  line-height: 1.5;
-}
-.bold {
-  font-weight: bold;
-}
-.select-container {
-  display: flex;
-  justify-content: flex-end;
-  margin-right: 135px;
-  padding-bottom: 20px;
-}
-.select {
-  margin: 0px 30px;
-  border-radius: 3px;
-}
-.line-divider {
-  width: 100%;
-  margin-bottom: 20px;
-}
-.edit-btn-container {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-.rootnode-btn {
-  cursor: pointer;
-  height: 22px;
-  padding: 0;
-  margin: 0;
-  border: none;
-}
-</style>

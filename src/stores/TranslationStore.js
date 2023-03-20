@@ -8,12 +8,14 @@ export const useTranslationStore = defineStore('translationStore', {
     translationListRight: [],
     selectedLanguageLeft: null,
     selectedLanguageRight: null,
+    loadingNodes: true,
   }),
   actions: {
     async getDefaultNodes(locale) {
       await api.fetchNodes(locale).then((res) => {
         console.log(res.data);
         this.nodes = res.data;
+        this.loadingNodes = false;
       });
     },
     async getTranslationsLeft(event) {

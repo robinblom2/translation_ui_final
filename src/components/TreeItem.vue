@@ -68,12 +68,12 @@ export default {
     <div class="tree-content">
       <div class="node-container">
         <input
-          class="input"
+          class="me-2 rounded"
           type="text"
           v-model="model.name"
           @keyup.enter="updateNodeName(model.name)"
         />
-        <button class="edit-btn" @click="showModal = true">Edit Node</button>
+        <button @click="showModal = true">Edit Node</button>
         <span
           class="expand-btn"
           v-if="isFolder"
@@ -84,7 +84,7 @@ export default {
         >
       </div>
     </div>
-    <div class="key-container" v-for="key in model.keys" v-if="isOpen">
+    <div class="d-flex justify-content-between" v-for="key in model.keys" v-if="isOpen">
       <div>
         <input
           class="input"
@@ -101,7 +101,6 @@ export default {
       </div>
       <div
         v-else="translationStore.translationListLeft"
-        class="translation-container"
       >
         <TranslationComponent :keyId="key.id" />
       </div>
@@ -113,25 +112,11 @@ export default {
 </template>
 
 <style scoped>
-.edit-btn {
-  margin-left: 5px;
-}
-.tree-content {
-  display: flex;
-}
-.key-container {
-  display: flex;
-  justify-content: space-between;
-  padding-left: 15px;
-}
-.translation-container {
-  display: flex;
-  justify-content: flex-end;
-}
 .expand-btn {
   cursor: pointer;
-  color: white;
-  font-weight: bold;
+}
+.expand-btn:hover {
+  color: red;
 }
 .list-item {
   color: white;
