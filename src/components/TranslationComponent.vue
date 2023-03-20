@@ -1,10 +1,19 @@
 <template>
   <div class="parent">
-    <input
-      v-model="translationValue.value"
-      @input="updateTranslation"
-      @keyup.enter="updateTranslationRequest"
-    />
+    <div v-for="translation in translationStore.translationListLeft">
+      <div v-if="translation.keyId == keyId">
+        <input
+          v-model="translation.value"
+        />
+      </div>
+    </div>
+    <div v-for="translation in translationStore.translationListRight">
+      <div v-if="translation.keyId == keyId">
+        <input
+          v-model="translation.value"
+        />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -15,55 +24,21 @@ export default {
   name: 'TranslationComponent',
   props: {
     keyId: Number,
-    translationList: Array,
   },
   setup() {
     const translationStore = useTranslationStore();
     return { translationStore };
   },
   data() {
-    return {
-      translationValue: Object,
-    };
-  },
-  created() {
-    this.setTranslationValue();
-  },
-  methods: {
-    setTranslationValue() {
-      const translationObj = this.translationList.find(
-        (t) => t.keyId == this.keyId
-      );
-
-      if (translationObj) {
-        this.translationValue = {
-          value: translationObj.value,
-          localeId: translationObj.localeId,
-          translationId: translationObj.id,
-          keyId: translationObj.keyId,
-        };
-      }
-    },
-    async updateTranslationRequest() {
-      if (this.translationValue) {
-        // console.log(this.translationValue.value);
-        // console.log(this.keyId);
-        // console.log(this.translationValue.localeId);
-
-        await this.translationStore.updateTranslation(
-          this.translationValue,
-          this.translationValue.translationId
-        );
-      }
-    },
-    updateTranslation(event) {
-      this.translationValue.value = event.target.value;
-    },
+    return {};
   },
 };
 </script>
 
 <style>
+.parent {
+  display: flex;
+}
 .input {
   padding: 3px;
   border-radius: 3px;

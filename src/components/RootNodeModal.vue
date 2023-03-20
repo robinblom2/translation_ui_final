@@ -26,9 +26,6 @@ import api from '../services/Api';
 import { useTranslationStore } from '../stores/TranslationStore';
 
 export default {
-  props: {
-    model: Object,
-  },
   data() {
     return {
       rootNodeName: '',

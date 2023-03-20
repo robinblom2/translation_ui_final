@@ -16,15 +16,15 @@ export const useTranslationStore = defineStore('translationStore', {
         this.nodes = res.data;
       });
     },
-    async getTranslationsLeft(locale) {
-      console.log(this.selectedLanguageLeft);
-      await api.fetchTranslations(locale).then((res) => {
+    async getTranslationsLeft(event) {
+      console.log(event.target.value);
+      await api.fetchTranslations(event.target.value).then((res) => {
         this.translationListLeft = res.data;
         console.log(this.translationListLeft);
       });
     },
-    async getTranslationsRight(locale) {
-      await api.fetchTranslations(locale).then((res) => {
+    async getTranslationsRight(event) {
+      await api.fetchTranslations(event.target.value).then((res) => {
         this.translationListRight = res.data;
         console.log(this.translationListRight);
       });

@@ -12,15 +12,10 @@ export default {
   },
   props: {
     model: Object,
-    selectedLanguageLeft: String,
-    selectedLanguageRight: String,
   },
   data() {
     return {
-      languageLeft: '',
-      languageRight: '',
       isOpen: false,
-      test: null,
       showModal: false,
     };
   },
@@ -64,14 +59,6 @@ export default {
       this.translationStore.getDefaultNodes();
     },
   },
-  watch: {
-    selectedLanguageLeft: function (newVal, oldVal) {
-      this.languageLeft = newVal;
-    },
-    selectedLanguageRight: function (newVal, oldVal) {
-      this.languageRight = newVal;
-    },
-  },
 };
 </script>
 
@@ -106,27 +93,21 @@ export default {
           @keyup.enter="updateKeyName(key)"
         />
       </div>
-      <div v-if="languageLeft" class="translation-container">
-        <TranslationComponent
-          :keyId="key.id"
-          :translationList="translationStore.translationListLeft"
-          :languageLeft="languageLeft"
-        />
+      <div
+        v-if="translationStore.translationListLeft"
+        class="translation-container"
+      >
+        <TranslationComponent :keyId="key.id" />
       </div>
-      <div v-if="languageRight" class="translation-container">
-        <TranslationComponent
-          :keyId="key.id"
-          :translationList="translationStore.translationListRight"
-        />
+      <div
+        v-else="translationStore.translationListLeft"
+        class="translation-container"
+      >
+        <TranslationComponent :keyId="key.id" />
       </div>
     </div>
     <ul v-show="isOpen" v-if="isFolder">
-      <TreeItem
-        v-for="model in model.childNodes"
-        :model="model"
-        :selectedLanguageLeft="languageLeft"
-        :selectedLanguageRight="languageRight"
-      />
+      <TreeItem v-for="model in model.childNodes" :model="model" />
     </ul>
   </li>
 </template>
