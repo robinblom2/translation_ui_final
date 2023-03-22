@@ -1,76 +1,89 @@
 import axios from 'axios';
 
 export default {
+  // Locales
+  async AddLocale(locale) {
+    const requestData = {
+      Name: locale.name,
+    };
+    console.log(requestData);
+    return await axios.post('/test/api/admin/Locales', requestData);
+  },
+  async DeleteLocale(id) {
+    return await axios.delete(`/test/api/admin/Locales/${id}`);
+  },
+  async UpdateLocale(locale) {
+    const requestData = {
+      Name: locale.name,
+    };
+    return await axios.put(`/test/api/admin/Locales/${locale.id}`, requestData);
+  },
+  async fetchSelectOptions() {
+    return await axios.get('/test/api/admin/Locales');
+  },
+
+  // Nodes
   async fetchNodes(locale) {
     return await axios.get('/test/api/admin/Nodes?locale=' + locale);
   },
-  async fetchTranslations(locale) {
-    return await axios.get(`/test/api/admin/Translations/${locale}/test`);
+  async addNode(nodeName, parentId) {
+    const requestData = {
+      ParentId: parentId,
+      Name: nodeName,
+    };
+    return await axios.post('/test/api/admin/Nodes', requestData);
   },
-  fetchSelectOptions() {
-    return axios.get('/test/api/admin/Locales');
-  },
-  updateNode(node) {
+  async updateNode(node) {
     const requestData = {
       ParentId: node.parentId,
       Name: node.name,
     };
-    return axios.put(`/test/api/admin/Nodes/${node.id}`, requestData);
+    return await axios.put(`/test/api/admin/Nodes/${node.id}`, requestData);
   },
-  updateKey(key) {
+  async deleteNode(nodeId) {
+    return await axios.delete(`/test/api/admin/Nodes/${nodeId}`);
+  },
+
+  // Keys
+  async addKey(keyName, nodeId) {
+    const requestData = {
+      NodeId: nodeId,
+      Name: keyName,
+    };
+    return await axios.post('/test/api/admin/Keys', requestData);
+  },
+  async updateKey(key) {
     const requestData = {
       NodeId: key.nodeId,
       Name: key.name,
     };
-    return axios.put(`/test/api/admin/Keys/${key.id}`, requestData);
+    return await axios.put(`/test/api/admin/Keys/${key.id}`, requestData);
   },
-  updateTranslation(translation, translationId) {
+  async deleteKey(keyId) {
+    return await axios.delete(`/test/api/admin/Keys/${keyId}`);
+  },
+
+  // Translations
+  async fetchTranslations(locale) {
+    return await axios.get(`/test/api/admin/Translations/${locale}/test`); // Not used atm
+  },
+  async fetchTranslationsByNode(locale, nodeId) {
+    console.log(locale);
+    console.log(nodeId);
+    return await axios.get(
+      `/test/api/admin/Translations/GetTranslationsByNode/${nodeId}?locale=` +
+        locale
+    );
+  },
+  async updateTranslation(translation, translationId) {
     const requestData = {
       KeyId: translation.keyId,
       LocaleId: translation.localeId,
       Value: translation.value,
     };
-    return axios.put(
+    return await axios.put(
       `/test/api/admin/Translations/${translationId}`,
       requestData
     );
-  },
-  addKey(keyName, nodeId) {
-    const requestData = {
-      NodeId: nodeId,
-      Name: keyName,
-    };
-    return axios.post('/test/api/admin/Keys', requestData);
-  },
-  deleteKey(keyId) {
-    return axios.delete(`/test/api/admin/Keys/${keyId}`);
-  },
-  addNode(nodeName, parentId) {
-    const requestData = {
-      ParentId: parentId,
-      Name: nodeName,
-    };
-    return axios.post('/test/api/admin/Nodes', requestData);
-  },
-  deleteNode(nodeId) {
-    return axios.delete(`/test/api/admin/Nodes/${nodeId}`);
-  },
-
-  // Locales
-  AddLocale(locale) {
-    const requestData = {
-      Name: locale.name,
-    };
-    console.log(requestData);
-    return axios.post('/test/api/admin/Locales', requestData);
-  },
-  DeleteLocale(id) {
-    return axios.delete(`/test/api/admin/Locales/${id}`);
-  },
-  UpdateLocale(locale) {
-    const requestData = {
-      Name: locale.name,
-    };
-    return axios.put(`/test/api/admin/Locales/${locale.id}`, requestData);
   },
 };

@@ -1,16 +1,20 @@
 <template>
-  <div class="parent">
+  <div class="d-flex">
     <div v-for="translation in translationStore.translationListLeft">
       <div v-if="translation.keyId == keyId">
         <input
+          class="rounded"
           v-model="translation.value"
+          @keyup.enter="updateTranslationRequest(translation, $event)"
         />
       </div>
     </div>
     <div v-for="translation in translationStore.translationListRight">
       <div v-if="translation.keyId == keyId">
         <input
+          class="rounded"
           v-model="translation.value"
+          @keyup.enter="updateTranslationRequest(translation, $event)"
         />
       </div>
     </div>
@@ -32,16 +36,19 @@ export default {
   data() {
     return {};
   },
+  methods: {
+    async updateTranslationRequest(translation, event, trans) {
+      var updatedTranslation = {
+        keyId: translation.keyId,
+        localeId: translation.localeId,
+        value: event.target.value,
+      };
+
+      await this.translationStore.updateTranslation(
+        updatedTranslation,
+        translation.id
+      );
+    },
+  },
 };
 </script>
-
-<style>
-.parent {
-  display: flex;
-}
-.input {
-  padding: 3px;
-  border-radius: 3px;
-  border: 1px solid black;
-}
-</style>

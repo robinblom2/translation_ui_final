@@ -5,7 +5,9 @@ export const useTranslationStore = defineStore('translationStore', {
   state: () => ({
     nodes: [],
     translationListLeft: [],
+    fetchedNodeIdsLeft: [],
     translationListRight: [],
+    fetchedNodeIdsRight: [],
     selectedLanguageLeft: null,
     selectedLanguageRight: null,
     loadingNodes: true,
@@ -13,22 +15,50 @@ export const useTranslationStore = defineStore('translationStore', {
   actions: {
     async getDefaultNodes(locale) {
       await api.fetchNodes(locale).then((res) => {
-        console.log(res.data);
         this.nodes = res.data;
         this.loadingNodes = false;
       });
     },
-    async getTranslationsLeft(event) {
-      console.log(event.target.value);
-      await api.fetchTranslations(event.target.value).then((res) => {
-        this.translationListLeft = res.data;
-        console.log(this.translationListLeft);
+    async getTranslationsForLeftTree(event, nodeId) {
+      if (
+        !this.fetchedNodeIdsLeft.includes(nodeId) &&
+        this.selectedLanguageLeft
+      ) {
+        this.fetchedNodeIdsLeft.push(nodeId);
+        await api.fetchTranslationsByNode(event, nodeId).then((res) => {
+          this.translationListLeft = this.translationListLeft.concat(res.data);
+        });
+      }
+    },
+    async getTranslationsForRightTree(event, nodeId) {
+      if (
+        !this.fetchedNodeIdsRight.includes(nodeId) &&
+        this.selectedLanguageRight
+      ) {
+        this.fetchedNodeIdsRight.push(nodeId);
+        await api.fetchTranslationsByNode(event, nodeId).then((res) => {
+          this.translationListRight = this.translationListRight.concat(
+            res.data
+          );
+        });
+      }
+    },
+    renderExpandedNodesLeft(event) {
+      this.translationListLeft = [];
+      var nodeIdCopy = [...this.fetchedNodeIdsLeft];
+      this.fetchedNodeIdsLeft = [];
+
+      nodeIdCopy.forEach((id) => {
+        this.getTranslationsForLeftTree(event.target.value, id);
       });
     },
-    async getTranslationsRight(event) {
-      await api.fetchTranslations(event.target.value).then((res) => {
-        this.translationListRight = res.data;
-        console.log(this.translationListRight);
+    renderExpandedNodesRight(event) {
+      this.translationListRight = [];
+      var nodeIdCopy = [...this.fetchedNodeIdsRight];
+      this.fetchedNodeIdsRight = [];
+
+      nodeIdCopy.forEach((id) => {
+        this.getTranslationsForRightTree(event.target.value, id);
       });
     },
     async updateTranslation(translation, translationId) {
