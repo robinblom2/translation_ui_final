@@ -22,19 +22,19 @@ export default {
       Name: locale.name,
     };
     console.log(requestData);
-    return await axios.post('/test/api/admin/Locales', requestData);
+    return await api.post('/test/api/admin/Locales', requestData);
   },
   async DeleteLocale(id) {
-    return await axios.delete(`/test/api/admin/Locales/${id}`);
+    return await api.delete(`/test/api/admin/Locales/${id}`);
   },
   async UpdateLocale(locale) {
     const requestData = {
       Name: locale.name,
     };
-    return await axios.put(`/test/api/admin/Locales/${locale.id}`, requestData);
+    return await api.put(`/test/api/admin/Locales/${locale.id}`, requestData);
   },
   async fetchSelectOptions() {
-    return await axios.get('/test/api/admin/Locales');
+    return await api.get('/test/api/admin/Locales');
   },
 
   // Nodes
@@ -47,7 +47,7 @@ export default {
       ParentId: parentId,
       Name: nodeName,
     };
-    return await axios.post('/test/api/admin/Nodes', requestData);
+    return await api.post('/test/api/admin/Nodes', requestData);
   },
   async updateNode(node) {
     const requestData = {
@@ -57,7 +57,7 @@ export default {
     return await api.put(`/test/api/admin/Nodes/${node.id}`, requestData);
   },
   async deleteNode(nodeId) {
-    return await axios.delete(`/test/api/admin/Nodes/${nodeId}`);
+    return await api.delete(`/test/api/admin/Nodes/${nodeId}`);
   },
 
   // Keys
@@ -66,7 +66,7 @@ export default {
       NodeId: nodeId,
       Name: keyName,
     };
-    return await axios.post('/test/api/admin/Keys', requestData);
+    return await api.post('/test/api/admin/Keys', requestData);
   },
   async updateKey(key) {
     const requestData = {
@@ -76,17 +76,17 @@ export default {
     return await api.put(`/test/api/admin/Keys/${key.id}`, requestData);
   },
   async deleteKey(keyId) {
-    return await axios.delete(`/test/api/admin/Keys/${keyId}`);
+    return await api.delete(`/test/api/admin/Keys/${keyId}`);
   },
 
   // Translations
   async fetchTranslations(locale) {
-    return await axios.get(`/test/api/admin/Translations/${locale}/test`); // Not used atm
+    return await api.get(`/test/api/admin/Translations/${locale}/test`); // Not used atm
   },
   async fetchTranslationsByNode(locale, nodeId) {
     console.log(locale);
     console.log(nodeId);
-    return await axios.get(
+    return await api.get(
       `/test/api/admin/Translations/GetTranslationsByNode/${nodeId}?locale=` +
         locale
     );

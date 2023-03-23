@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import apiService from '../services/Api';
+import api from '../services/Api';
 
 export const useTranslationStore = defineStore('translationStore', {
   state: () => ({
