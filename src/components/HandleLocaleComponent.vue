@@ -1,6 +1,6 @@
 <template>
   <div>
-    <button class="locale-btn" @click="openModal">Handle Locales</button>
+    <button class="locale-btn" @click="openModal">Locales</button>
     <div class="modal" v-if="showModal" @click.self="closeModal">
       <div class="modal-content">
         <button type="button" class="close-button" @click="closeModal">
@@ -151,12 +151,28 @@ export default {
 }
 
 .locale-btn {
+  background-color: #ee9445d6;
+  border-radius: 2px;
+  box-shadow: rgba(240, 148, 44, 0.582) 0 -25px 18px -14px inset,rgba(230, 111, 26, 0.15) 0 1px 2px,rgba(219, 146, 27, 0.478) 0 2px 4px,rgba(187, 125, 44, 0.15) 0 4px 8px,rgba(187, 104, 44, 0.15) 0 8px 16px,rgba(187, 104, 44, 0.15) 0 16px 32px;
+  color: bisque;
   cursor: pointer;
-  height: 22px;
-  padding: 0px;
-  margin: 0;
-  border: none;
-  margin-right: 20px;
+  display: inline-block;
+  font-family: 'Roboto', sans-serif;
+  padding: 7px 20px;
+  text-align: center;
+  text-decoration: none;
+  transition: all 250ms;
+  border: 0;
+  font-size: 12px;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  margin-left: 40%;
+}
+
+.locale-btn:hover {
+  box-shadow: rgba(187, 101, 44, 0.942) 0 -25px 18px -14px inset,rgba(231, 164, 64, 0.893) 0 1px 2px,rgba(243, 155, 67, 0.835) 0 2px 4px,rgba(243, 136, 54, 0.909) 0 4px 8px,rgba(237, 145, 54, 0.934) 0 8px 16px,rgba(251, 174, 81, 0.868) 0 16px 32px;
+  transform: scale(1.05) rotate(-1deg);
 }
 
 .delete-button {
