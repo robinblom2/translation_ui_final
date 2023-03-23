@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import api from '../services/Api';
+import apiService from '../services/Api';
 
 export const useTranslationStore = defineStore('translationStore', {
   state: () => ({
@@ -62,7 +62,7 @@ export const useTranslationStore = defineStore('translationStore', {
       });
     },
     async updateTranslation(translation, translationId) {
-      const response = await api.updateTranslation(translation, translationId);
+      const response = await apiService.updateTranslation(translation, translationId);
       console.log(response);
     },
   },

@@ -1,4 +1,19 @@
 import axios from 'axios';
+import { getAccessToken } from './MsalService';
+
+export const api = axios.create();
+
+
+api.interceptors.request.use(
+  async config => {
+    const token = await getAccessToken()
+    config.headers['Authorization'] = `bearer ${token}`
+    return config;
+  },
+  error => {
+    return Promise.reject(error)
+  }
+)
 
 export default {
   // Locales
@@ -23,8 +38,9 @@ export default {
   },
 
   // Nodes
+
   async fetchNodes(locale) {
-    return await axios.get('/test/api/admin/Nodes?locale=' + locale);
+      return await api.get('/test/api/admin/Nodes?locale=' + locale);    
   },
   async addNode(nodeName, parentId) {
     const requestData = {
@@ -38,7 +54,7 @@ export default {
       ParentId: node.parentId,
       Name: node.name,
     };
-    return await axios.put(`/test/api/admin/Nodes/${node.id}`, requestData);
+    return await api.put(`/test/api/admin/Nodes/${node.id}`, requestData);
   },
   async deleteNode(nodeId) {
     return await axios.delete(`/test/api/admin/Nodes/${nodeId}`);
@@ -57,7 +73,7 @@ export default {
       NodeId: key.nodeId,
       Name: key.name,
     };
-    return await axios.put(`/test/api/admin/Keys/${key.id}`, requestData);
+    return await api.put(`/test/api/admin/Keys/${key.id}`, requestData);
   },
   async deleteKey(keyId) {
     return await axios.delete(`/test/api/admin/Keys/${keyId}`);
@@ -81,7 +97,7 @@ export default {
       LocaleId: translation.localeId,
       Value: translation.value,
     };
-    return await axios.put(
+    return await api.put(
       `/test/api/admin/Translations/${translationId}`,
       requestData
     );

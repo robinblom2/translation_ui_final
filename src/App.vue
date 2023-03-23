@@ -1,5 +1,8 @@
 <template>
-  <div class="d-flex justify-content-between">
+  <div v-if="!userSessionStore.isLoggedIn">
+    <LoginComponent />
+  </div>
+  <div v-else class="d-flex justify-content-between">
     <div class="d-flex">
       <HandleLocaleComponent />
     </div>
@@ -51,11 +54,14 @@ import TreeItem from './components/TreeItem.vue';
 import HandleLocaleComponent from './components/HandleLocaleComponent.vue';
 import { useTranslationStore } from '../src/stores/TranslationStore';
 import { useLocaleStore } from './stores/LocaleStore';
+import LoginComponent from './components/LoginComponent.vue';
+import { useUserSessionStore } from './stores/UserSessionStore';
 
 export default {
   components: {
     TreeItem,
     HandleLocaleComponent,
+    LoginComponent,
   },
   data() {
     return {
@@ -74,15 +80,35 @@ export default {
         });
     },
   },
+  watch: {
+    "userSessionStore.activeAccount": {
+      handler(newActiveAccount, oldActiveAccount) {
+        if (newActiveAccount && !oldActiveAccount) {
+          this.translationStore.getDefaultNodes();
+          this.localeStore.getSelectOptions();
+        }
+      },
+      immediate: true,
+    },
+    selectedLanguageLeft: function (newVal, oldVal) {
+      this.translationStore.getTranslationsLeft(newVal);
+    },
+    selectedLanguageRight: function (newVal, oldVal) {
+      this.translationStore.getTranslationsRight(newVal);
+    },
+  },
   mounted() {
-    this.translationStore.getDefaultNodes();
-    this.localeStore.getSelectOptions();
+
   },
   setup() {
     const translationStore = useTranslationStore();
     const localeStore = useLocaleStore();
+    const userSessionStore = useUserSessionStore();
 
-    return { translationStore, localeStore };
+    return { translationStore, localeStore, userSessionStore };
   },
+  created() {
+    this.userSessionStore.init();
+  }
 };
 </script>

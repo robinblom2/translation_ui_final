@@ -56,6 +56,8 @@ import api from '../services/Api';
 import TranslationComponent from '../components/TranslationComponent.vue';
 import { useTranslationStore } from '../stores/TranslationStore';
 import EditNodeModal from './EditNodeModal.vue';
+import { useLocaleStore } from '../stores/LocaleStore';
+import { useUserSessionStore } from '../stores/UserSessionStore';
 
 export default {
   name: 'TreeItem',
@@ -75,8 +77,9 @@ export default {
   },
   setup() {
     const translationStore = useTranslationStore();
+    const localeStore = useLocaleStore();
 
-    return { translationStore };
+    return { translationStore, localeStore };
   },
   computed: {
     isFolder() {
