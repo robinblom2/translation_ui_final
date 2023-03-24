@@ -62,7 +62,7 @@ export const useTranslationStore = defineStore('translationStore', {
       });
     },
     async updateTranslation(translation, translationId) {
-      const response = await apiService.updateTranslation(translation, translationId);
+      const response = await api.updateTranslation(translation, translationId);
       console.log(response);
     },
   },
