@@ -37,11 +37,12 @@
             Add key
           </button>
         </div>
+
         <div class="remove-key-container">
           <div class="modal-key">
             <select class="select" v-model="selectedKey">
               <option disabled value="">Select Key</option>
-              <option v-for="key in model.keys" :value="key">
+              <option v-for="key in selectOptions.data" :value="key">
                 {{ key.name }}
               </option>
             </select>
@@ -68,34 +69,38 @@ export default {
       newNodeName: '',
       newKeyName: '',
       selectedKey: [],
+      selectOptions: [],
     };
   },
   methods: {
     async addKey(keyName, nodeId) {
-      const response = await api.addKey(keyName, nodeId);
+      const res = await api.addKey(keyName, nodeId);
+      this.translationStore.keys.push(res.data);
       this.newKeyName = '';
-      console.log(response);
-      this.translationStore.getDefaultNodes();
     },
     async removeKey(selectedKey) {
-      const response = await api.deleteKey(selectedKey.id);
-      this.translationStore.getDefaultNodes();
+      await api.deleteKey(selectedKey.id);
+      this.translationStore.keys = this.translationStore.keys.filter(
+        (key) => key.id !== selectedKey.id
+      );
+      this.selectOptions = await api.getAllKeysByNode(this.model.id);
     },
     async addNode(nodeName, parentId) {
-      const response = await api.addNode(nodeName, parentId);
+      const res = await api.addNode(nodeName, parentId);
+      this.translationStore.nodes.push(res.data);
       this.newNodeName = '';
-      console.log(response);
     },
     async removeNode(nodeId) {
-      const response = await api.deleteNode(nodeId);
-      console.log(response);
-      this.translationStore.getDefaultNodes();
+      const result = await api.deleteNode(nodeId);
+      this.translationStore.nodes = result.data;
     },
   },
   setup() {
     const translationStore = useTranslationStore();
-
     return { translationStore };
+  },
+  async created() {
+    this.selectOptions = await api.getAllKeysByNode(this.model.id);
   },
 };
 </script>
@@ -144,7 +149,6 @@ export default {
   flex-direction: column;
 }
 .close {
-  /* margin: 5% 0 0 5px; */
   cursor: pointer;
   display: flex;
   align-self: flex-end;

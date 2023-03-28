@@ -3,17 +3,16 @@ import { getAccessToken } from './MsalService';
 
 export const api = axios.create();
 
-
 api.interceptors.request.use(
-  async config => {
-    const token = await getAccessToken()
-    config.headers['Authorization'] = `bearer ${token}`
+  async (config) => {
+    const token = await getAccessToken();
+    config.headers['Authorization'] = `bearer ${token}`;
     return config;
   },
-  error => {
-    return Promise.reject(error)
+  (error) => {
+    return Promise.reject(error);
   }
-)
+);
 
 export default {
   // Locales
@@ -21,7 +20,6 @@ export default {
     const requestData = {
       Name: locale.name,
     };
-    console.log(requestData);
     return await api.post('/test/api/admin/Locales', requestData);
   },
   async DeleteLocale(id) {
@@ -38,9 +36,8 @@ export default {
   },
 
   // Nodes
-
-  async fetchNodes(locale) {
-      return await api.get('/test/api/admin/Nodes?locale=' + locale);    
+  async getAllNodes() {
+    return await api.get('/test/api/admin/Nodes/GetAllNodes');
   },
   async addNode(nodeName, parentId) {
     const requestData = {
@@ -78,14 +75,12 @@ export default {
   async deleteKey(keyId) {
     return await api.delete(`/test/api/admin/Keys/${keyId}`);
   },
+  async getAllKeysByNode(nodeId) {
+    return await api.get(`/test/api/admin/Keys/GetAllKeysByNode/${nodeId}`);
+  },
 
   // Translations
-  async fetchTranslations(locale) {
-    return await api.get(`/test/api/admin/Translations/${locale}/test`); // Not used atm
-  },
   async fetchTranslationsByNode(locale, nodeId) {
-    console.log(locale);
-    console.log(nodeId);
     return await api.get(
       `/test/api/admin/Translations/GetTranslationsByNode/${nodeId}?locale=` +
         locale

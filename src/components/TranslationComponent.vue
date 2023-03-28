@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex">
+  <div class="d-flex flex-row">
     <div v-for="translation in translationStore.translationListLeft">
       <div v-if="translation.keyId == keyId">
         <input
@@ -37,7 +37,7 @@ export default {
     return {};
   },
   methods: {
-    async updateTranslationRequest(translation, event, trans) {
+    async updateTranslationRequest(translation, event) {
       var updatedTranslation = {
         keyId: translation.keyId,
         localeId: translation.localeId,
