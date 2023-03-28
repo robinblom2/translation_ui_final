@@ -1,6 +1,5 @@
 <template>
   <EditNodeModal v-if="showModal" :model="model" @close-modal="closeModal" />
-  {{ model.id }}
   <li>
     <div class="d-flex">
       <div v-if="model.id == 1">
@@ -18,34 +17,31 @@
       </div>
       <span
         class="expand-btn"
-        v-if="isFolder"
         @click="toggleNode(model.id)"
         @dbclick="changeType"
       >
         [{{ isOpen ? '-' : '+' }}]</span
       >
     </div>
-    <div
-      class="d-flex justify-content-between"
-      v-for="key in model.keys"
-      v-if="isOpen"
-    >
-      <div>
-        <input
-          class="rounded ms-5"
-          type="text"
-          v-model="key.name"
-          @keyup.enter="updateKeyName(key)"
-        />
-      </div>
-      <div v-if="translationStore.translationListLeft">
-        <TranslationComponent :keyId="key.id" />
-      </div>
-      <div v-else="translationStore.translationListLeft">
-        <TranslationComponent :keyId="key.id" />
+    <div class="" v-for="key in this.translationStore.keys" v-if="isOpen">
+      <div v-if="key.nodeId === model.id">
+        <div class="d-flex flex-row justify-content-between align-items-center">
+          <input
+            class="rounded ms-5"
+            type="text"
+            v-model="key.name"
+            @keyup.enter="updateKeyName(key)"
+          />
+          <div v-if="translationStore.translationListLeft">
+            <TranslationComponent :keyId="key.id" />
+          </div>
+          <div v-else="translationStore.translationListLeft">
+            <TranslationComponent :keyId="key.id" />
+          </div>
+        </div>
       </div>
     </div>
-    <ul v-show="isOpen" v-if="isFolder">
+    <ul v-show="isOpen" v-if="isFolder" style="margin-left: 30px">
       <TreeItem v-for="model in model.childNodes" :model="model" />
     </ul>
   </li>
@@ -82,10 +78,7 @@ export default {
   },
   computed: {
     isFolder() {
-      return (
-        (this.model.childNodes && this.model.childNodes.length) ||
-        (this.model.keys && this.model.keys.length)
-      );
+      return true;
     },
   },
   methods: {
@@ -93,6 +86,7 @@ export default {
       if (this.isFolder && this.isOpen) {
         this.isOpen = false;
       } else if (this.isFolder && !this.isOpen) {
+        this.translationStore.getKeysByNodeId(id);
         this.isOpen = true;
         if (this.translationStore.selectedLanguageLeft) {
           this.translationStore.getTranslationsForLeftTree(
@@ -124,24 +118,21 @@ export default {
       }
     },
     async addRootNode(nodeName) {
-      const response = await api.addNode(nodeName, 1);
-      console.log(response);
+      const res = await api.addNode(nodeName, 1);
+      this.translationStore.nodes.push(res.data);
       this.rootNodeName = '';
-      await this.translationStore.getDefaultNodes();
-      console.log(response);
+      await this.translationStore.getAllNodes();
     },
     async updateNodeName(newNodeName) {
       const updatedNode = { ...this.model, newNodeName };
-      const response = await api.updateNode(updatedNode);
-      console.log(response);
+      await api.updateNode(updatedNode);
     },
     async updateKeyName(key) {
-      const response = await api.updateKey(key);
-      console.log(response);
+      await api.updateKey(key);
     },
     async closeModal() {
       this.showModal = false;
-      await this.translationStore.getDefaultNodes();
+      await this.translationStore.getAllNodes();
     },
   },
 };

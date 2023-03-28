@@ -4,7 +4,9 @@
       <div class="login-header">
         <h3 class="text">Welcome</h3>
         <h3 class="text">To the TranslatiFire</h3>
-        <button type="button" class="login-btn text" @click="logIn">Login</button>
+        <button type="button" class="login-btn text" @click="logIn">
+          Login
+        </button>
       </div>
     </div>
   </div>
@@ -25,7 +27,6 @@ export default {
 
   setup() {
     const userSessionStore = useUserSessionStore();
-
     return { userSessionStore };
   },
 

@@ -4,6 +4,7 @@ import api from '../services/Api';
 export const useTranslationStore = defineStore('translationStore', {
   state: () => ({
     nodes: [],
+    keys: [],
     translationListLeft: [],
     fetchedNodeIdsLeft: [],
     translationListRight: [],
@@ -13,11 +14,18 @@ export const useTranslationStore = defineStore('translationStore', {
     loadingNodes: true,
   }),
   actions: {
-    async getDefaultNodes(locale) {
-      await api.fetchNodes(locale).then((res) => {
+    async getAllNodes() {
+      await api.getAllNodes().then((res) => {
         this.nodes = res.data;
         this.loadingNodes = false;
       });
+    },
+    async getKeysByNodeId(id) {
+      if (!this.fetchedNodeIdsLeft.includes(id)) {
+        await api.getAllKeysByNode(id).then((res) => {
+          this.keys = this.keys.concat(res.data);
+        });
+      }
     },
     async getTranslationsForLeftTree(event, nodeId) {
       if (
@@ -63,7 +71,6 @@ export const useTranslationStore = defineStore('translationStore', {
     },
     async updateTranslation(translation, translationId) {
       const response = await api.updateTranslation(translation, translationId);
-      console.log(response);
     },
   },
 });

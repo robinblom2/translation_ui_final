@@ -8,17 +8,28 @@
         <HandleLocaleComponent />
       </div>
       <div class="me-4">
-        <select class="me-5" v-model="translationStore.selectedLanguageLeft"
-          @change="translationStore.renderExpandedNodesLeft($event)">
+        <select
+          class="me-5"
+          v-model="translationStore.selectedLanguageLeft"
+          @change="translationStore.renderExpandedNodesLeft($event)"
+        >
           <option disabled value="">Select Language</option>
-          <option v-for="option in localeStore.selectOptions" :value="option.name">
+          <option
+            v-for="option in localeStore.selectOptions"
+            :value="option.name"
+          >
             {{ option.name }}
           </option>
         </select>
-        <select v-model="translationStore.selectedLanguageRight"
-          @change="translationStore.renderExpandedNodesRight($event)">
+        <select
+          v-model="translationStore.selectedLanguageRight"
+          @change="translationStore.renderExpandedNodesRight($event)"
+        >
           <option disabled value="">Select Language</option>
-          <option v-for="option in localeStore.selectOptions" :value="option.name">
+          <option
+            v-for="option in localeStore.selectOptions"
+            :value="option.name"
+          >
             {{ option.name }}
           </option>
         </select>
@@ -30,7 +41,7 @@
       <span class="text-white ps-3">Fetching nodes...</span>
     </div>
     <ul>
-      <div v-for="node in translationStore.nodes">
+      <div v-for="node in translationStore.nodes" :key="node.id">
         <div v-if="node.parentId == null">
           <TreeItem :model="node" />
         </div>
@@ -59,23 +70,11 @@ export default {
       showLocaleModal: false,
     };
   },
-  methods: {
-    getSelectOptions() {
-      api
-        .fetchSelectOptions()
-        .then((res) => {
-          this.localeStore.selectOptions = res.data;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    },
-  },
   watch: {
-    "userSessionStore.activeAccount": {
+    'userSessionStore.activeAccount': {
       handler(newActiveAccount, oldActiveAccount) {
         if (newActiveAccount && !oldActiveAccount) {
-          this.translationStore.getDefaultNodes();
+          this.translationStore.getAllNodes();
           this.localeStore.getSelectOptions();
         }
       },
@@ -88,9 +87,7 @@ export default {
       this.translationStore.getTranslationsRight(newVal);
     },
   },
-  mounted() {
-
-  },
+  mounted() {},
   setup() {
     const translationStore = useTranslationStore();
     const localeStore = useLocaleStore();
@@ -100,6 +97,6 @@ export default {
   },
   created() {
     this.userSessionStore.init();
-  }
+  },
 };
 </script>
