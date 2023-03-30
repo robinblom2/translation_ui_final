@@ -9,7 +9,7 @@
       </div>
       <div class="me-4">
         <select
-          class="me-5"
+          class="select me-5"
           v-model="translationStore.selectedLanguageLeft"
           @change="translationStore.renderExpandedNodesLeft($event)"
         >
@@ -22,6 +22,7 @@
           </option>
         </select>
         <select
+          class="select me-5"
           v-model="translationStore.selectedLanguageRight"
           @change="translationStore.renderExpandedNodesRight($event)"
         >
@@ -35,18 +36,21 @@
         </select>
       </div>
     </div>
-    <hr class="border border-white border-1 opacity-50 mb-5 mt-5" />
-    <div v-if="translationStore.loadingNodes">
-      <div class="spinner-border text-light" role="status"></div>
-      <span class="text-white ps-3">Fetching nodes...</span>
-    </div>
-    <ul>
-      <div v-for="node in translationStore.nodes" :key="node.id">
-        <div v-if="node.parentId == null">
-          <TreeItem :model="node" />
-        </div>
+    <hr class="header-line" />
+    <div class="test">
+      <div v-if="translationStore.loadingNodes">
+        <div class="spinner-border text-light" role="status"></div>
+        <span class="text-white ps-3">Fetching nodes...</span>
       </div>
-    </ul>
+
+      <ul>
+        <div v-for="node in translationStore.nodes" :key="node.id">
+          <div v-if="node.parentId == null">
+            <TreeItem :model="node" />
+          </div>
+        </div>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -100,3 +104,27 @@ export default {
   },
 };
 </script>
+
+<style>
+.header-line {
+  border: none;
+  height: 3px;
+  
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+.test {
+  border-radius: 10px;
+  padding: 50px;
+  background-color: rgba(0, 0, 0, 0.658);
+  height: auto;
+  overflow-y: visible;
+
+  border: 2px solid transparent;
+  border-image: linear-gradient(to right, rgb(71, 0, 0), rgb()) 1;
+}
+.select {
+  padding: 1px;
+  border-radius: 3px;
+}
+</style>
